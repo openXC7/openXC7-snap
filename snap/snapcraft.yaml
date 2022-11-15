@@ -102,6 +102,9 @@ parts:
     organize:
       'python/*' : /opt/nextpnr-xilinx/python/
       'constids.inc' : /opt/nextpnr-xilinx/
+    stage:
+      - opt/nextpnr-xilinx/python/*
+      - opt/nextpnr-xilinx/constids.inc
 
   metadata:
     after: [nextpnr-xilinx]
