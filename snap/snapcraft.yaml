@@ -94,6 +94,22 @@ parts:
       snapcraftctl build
       cp bbasm ../install/usr/bin/
 
+  bbaexport:
+    after: [nextpnr-xilinx]
+    source: /root/parts/nextpnr-xilinx/src/xilinx/python
+    source-type: local
+    plugin: dump
+    organize:
+      '*' : /opt/bbaexport/
+
+  metadata:
+    after: [nextpnr-xilinx]
+    source: /root/parts/nextpnr-xilinx/src/xilinx/external/nextpnr-xilinx-meta
+    source-type: local
+    plugin: dump
+    organize:
+      '*' : /opt/metadata/
+
 apps:
   nextpnr-xilinx:
     command: usr/bin/nextpnr-xilinx
