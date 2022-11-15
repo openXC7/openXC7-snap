@@ -46,16 +46,9 @@ parts:
       pip3 install -r requirements-readthedocs.txt
       make
       make install
-    
-  fasm:
-    after: [pyjson]
-    source: https://github.com/chipsalliance/fasm.git
-    source-type: git
-    source-depth: 1
-    plugin: python
 
   prjxray:
-    after: [fasm]
+    after: [pyjson]
     source: https://github.com/kintex-chatter/prjxray.git
     source-type: git
     source-depth: 1
@@ -109,6 +102,6 @@ apps:
   prjxray-fasm:
     command: bin/fasm
   prjxray-fasm2frames:
-    command: usr/local/bin/fasm2frames
+    command: bin/fasm2frames
   prjxray-xc7frames2bit:
     command: usr/bin/xc7frames2bit
