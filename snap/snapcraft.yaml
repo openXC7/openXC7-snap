@@ -1,10 +1,12 @@
 name: nextpnr-kintex
 base: core20
 version: '0.1'
-summary: yosys+nextpnr FPGA toolchain with support for Kintex FPGAs
+summary: nextpnr PnR FPGA toolchain for Xilinx 7 series FPGAs, with Kintex support
 description: |
-  Pre-packaged toolchain with yosys+nextpnx-xilinx with support for
-  Kintex FPGAs
+  Pre-packaged toolchain nextpnx-xilinx with support for Xilinx 7 series FPGAs
+  (Spartan7, Artix7, Kintex7)
+  Includes support for Kintex FPGAs
+  This package does not include Yosys, which needs to be installed separately.
 grade: devel
 confinement: classic
 
