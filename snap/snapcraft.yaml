@@ -57,6 +57,9 @@ parts:
     cmake-parameters:
       - -DALLOW_ROOT=1
       - -DCMAKE_INSTALL_PREFIX=/usr
+    override-build: |
+      git clone https://github.com/SymbiFlow/prjxray-db.git
+      snapcraftctl build
 
   prjxray-python:
     after: [prjxray]
@@ -87,10 +90,15 @@ parts:
       - -DBUILD_GUI=0
       - -DCMAKE_INSTALL_PREFIX=/usr
     override-build: |
+      rm -rf ../src/xilinx/external/prjxray-db/
+      mv -f /root/parts/prjxray/build/prjxray-db ../src/xilinx/external/
       if [ ! -d db-workspace-for-kintex7 ]; then
         git clone https://github.com/kintex-chatter/db-workspace-for-kintex7.git
       fi
       cp -rv db-workspace-for-kintex7/* ../src/xilinx/external/prjxray-db/kintex7
+      pushd ../src/xilinx/external/prjxray-db/kintex7
+      ln -s xc7k480t xc7k420t
+      popd
       snapcraftctl build
       cp bbasm ../install/usr/bin/
 
