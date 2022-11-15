@@ -96,11 +96,12 @@ parts:
 
   bbaexport:
     after: [nextpnr-xilinx]
-    source: /root/parts/nextpnr-xilinx/src/xilinx/python
+    source: /root/parts/nextpnr-xilinx/src/xilinx/
     source-type: local
     plugin: dump
     organize:
-      '*' : /opt/bbaexport/
+      'python/*' : /opt/nextpnr-xilinx/python/
+      'constids.inc' : /opt/nextpnr-xilinx/
 
   metadata:
     after: [nextpnr-xilinx]
@@ -108,7 +109,15 @@ parts:
     source-type: local
     plugin: dump
     organize:
-      '*' : /opt/metadata/
+      '*' : /opt/nextpnr-xilinx/external/nextpnr-xilinx-meta/
+
+  prjxray-db:
+    after: [nextpnr-xilinx]
+    source: /root/parts/nextpnr-xilinx/src/xilinx/external/prjxray-db
+    source-type: local
+    plugin: dump
+    organize:
+      '*' : /opt/nextpnr-xilinx/external/prjxray-db/
 
 apps:
   nextpnr-xilinx:
