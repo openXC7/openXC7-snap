@@ -1,6 +1,6 @@
 name: nextpnr-kintex
 base: core20
-version: '0.1'
+version: '0.1.1'
 summary: nextpnr PnR FPGA toolchain for Xilinx 7 series FPGAs, with Kintex support
 description: |
   Pre-packaged toolchain nextpnx-xilinx with support for Xilinx 7 series FPGAs
@@ -66,7 +66,7 @@ parts:
 
   prjxray-python:
     after: [prjxray]
-    source: /root/parts/prjxray/src
+    source: /build/nextpnr-kintex/parts/prjxray/src
     source-type: local
     requirements:
       - requirements.txt
@@ -94,7 +94,7 @@ parts:
       - -DCMAKE_INSTALL_PREFIX=/usr
     override-build: |
       rm -rf ../src/xilinx/external/prjxray-db/
-      mv -f /root/parts/prjxray/build/prjxray-db ../src/xilinx/external/
+      mv -f /build/nextpnr-kintex/parts/prjxray/build/prjxray-db ../src/xilinx/external/
       if [ ! -d db-workspace-for-kintex7 ]; then
         git clone https://github.com/kintex-chatter/db-workspace-for-kintex7.git
       fi
@@ -107,7 +107,7 @@ parts:
 
   bbaexport:
     after: [nextpnr-xilinx]
-    source: /root/parts/nextpnr-xilinx/src/xilinx/
+    source: /build/nextpnr-kintex/parts/nextpnr-xilinx/src/xilinx/
     source-type: local
     plugin: dump
     organize:
@@ -119,7 +119,7 @@ parts:
 
   metadata:
     after: [nextpnr-xilinx]
-    source: /root/parts/nextpnr-xilinx/src/xilinx/external/nextpnr-xilinx-meta
+    source: /build/nextpnr-kintex/parts/nextpnr-xilinx/src/xilinx/external/nextpnr-xilinx-meta
     source-type: local
     plugin: dump
     organize:
@@ -127,7 +127,7 @@ parts:
 
   prjxray-db:
     after: [nextpnr-xilinx]
-    source: /root/parts/nextpnr-xilinx/src/xilinx/external/prjxray-db
+    source: /build/nextpnr-kintex/parts/nextpnr-xilinx/src/xilinx/external/prjxray-db
     source-type: local
     plugin: dump
     organize:
