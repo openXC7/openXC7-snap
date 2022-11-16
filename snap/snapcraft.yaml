@@ -19,6 +19,7 @@ build-packages:
   - git
   - libreadline-dev
   - gawk
+  - gfortran
   - tcl-dev
   - libffi-dev
   - pkg-config
@@ -61,7 +62,6 @@ parts:
       - -DCMAKE_INSTALL_PREFIX=/usr
     override-build: |
       git clone https://github.com/SymbiFlow/prjxray-db.git
-      find /
       snapcraftctl build
 
   prjxray-python:
