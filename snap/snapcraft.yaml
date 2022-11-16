@@ -61,6 +61,7 @@ parts:
       - -DCMAKE_INSTALL_PREFIX=/usr
     override-build: |
       git clone https://github.com/SymbiFlow/prjxray-db.git
+      find /
       snapcraftctl build
 
   prjxray-python:
