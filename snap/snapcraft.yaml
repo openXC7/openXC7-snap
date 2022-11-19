@@ -1,6 +1,6 @@
 name: nextpnr-kintex
 base: core20
-version: '0.1.1'
+version: '0.1.2'
 summary: nextpnr PnR FPGA toolchain for Xilinx 7 series FPGAs, with Kintex support
 description: |
   Pre-packaged toolchain nextpnx-xilinx with support for Xilinx 7 series FPGAs
@@ -61,9 +61,8 @@ parts:
       - -DALLOW_ROOT=1
       - -DCMAKE_INSTALL_PREFIX=/usr
     override-build: |
-      git clone https://github.com/SymbiFlow/prjxray-db.git
+      [ -d prjxray-db ] || git clone https://github.com/SymbiFlow/prjxray-db.git
       snapcraftctl build
-      find /build/parts/
 
   prjxray-python:
     after: [prjxray]
@@ -134,14 +133,26 @@ parts:
     organize:
       '*' : /opt/nextpnr-xilinx/external/prjxray-db/
 
+  prjxray-utils:
+    after: [prjxray-db]
+    source: ../parts/prjxray/src/utils/
+    source-type: local
+    plugin: dump
+    organize:
+      '*' : /opt/prjxray/utils/
+    override-prime: |
+      snapcraftctl prime
+      sed -i '5i sys.path.append("/snap/nextpnr-kintex/current/opt/prjxray/")' bin/fasm2frames
+      sed -i '6i sys.path.append("/snap/nextpnr-kintex/current/lib/python3.8/site-packages/")' bin/fasm2frames
+
 apps:
   nextpnr-xilinx:
     command: usr/bin/nextpnr-xilinx
   bbasm:
     command: usr/bin/bbasm
-  prjxray-fasm:
+  fasm:
     command: bin/fasm
-  prjxray-fasm2frames:
+  fasm2frames:
     command: bin/fasm2frames
-  prjxray-xc7frames2bit:
+  xc7frames2bit:
     command: usr/bin/xc7frames2bit
