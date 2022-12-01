@@ -73,13 +73,16 @@ parts:
     python-packages:
       - wheel
     plugin: python
+    override-prime: |
+      rm -v usr/lib/python3/dist-packages/fasm*egg* || true
+      snapcraftctl prime
 
   nextpnr-xilinx:
     after: [prjxray-python]
-    source: https://github.com/kintex-chatter/nextpnr-xilinx.git
+    source: https://github.com/gatecat/nextpnr-xilinx.git
     source-type: git
     source-depth: 1
-    source-branch: iob18-trial
+    source-branch: xilinx-upstream
     plugin: cmake
     stage-packages:
       - libboost-filesystem1.71.0
