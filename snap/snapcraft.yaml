@@ -52,10 +52,10 @@ parts:
 
   prjxray:
     after: [pyjson]
-    source: https://github.com/kintex-chatter/prjxray.git
+    source: https://github.com/f4pga/prjxray.git
     source-type: git
     source-depth: 1
-    source-branch: k7-iob18
+    source-branch: master
     plugin: cmake
     cmake-parameters:
       - -DALLOW_ROOT=1
