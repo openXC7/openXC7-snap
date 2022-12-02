@@ -73,8 +73,14 @@ parts:
     python-packages:
       - wheel
     plugin: python
+    override-build: |
+      pip3 install ../src/third_party/fasm/
+      snapcraftctl build
     override-prime: |
       rm -v usr/lib/python3/dist-packages/fasm*egg* || true
+      rm -v lib/python3.8/site-packages/fasm*egg* || true
+      cp -rv /usr/local/lib/python3.8/dist-packages/fasm usr/lib/python3/dist-packages/
+      cp -rv ../stage/lib/python3.8/site-packages/prjxray usr/lib/python3/dist-packages/
       snapcraftctl prime
 
   nextpnr-xilinx:
@@ -148,8 +154,10 @@ parts:
     override-prime: |
       snapcraftctl prime
       sed -i '5i sys.path.append("/snap/nextpnr-kintex/current/opt/prjxray/")' bin/fasm2frames
-      sed -i '6i sys.path.append("/snap/nextpnr-kintex/current/lib/python3.8/site-packages/")' bin/fasm2frames
+      sed -i '6i sys.path.append("/snap/nextpnr-kintex/current/usr/lib/python3/dist-packages/")' bin/fasm2frames
       sed -i '5i sys.path.append("/snap/nextpnr-kintex/current/usr/lib/python3/dist-packages/")' bin/fasm
+      sed -i '13i import sys; sys.path.append("/snap/nextpnr-kintex/current/usr/lib/python3/dist-packages/")' opt/prjxray/utils/fasm2frames.py
+      sed -i '14i sys.path.append("/snap/nextpnr-kintex/current/opt/prjxray/")' opt/prjxray/utils/fasm2frames.py
       cp bin/fasm2frames bin/bit2fasm
       sed -i '1,$s/from utils.fasm2frames/from utils.bit2fasm/g' bin/bit2fasm
 
