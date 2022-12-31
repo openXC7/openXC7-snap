@@ -72,6 +72,8 @@ parts:
       - requirements.txt
     python-packages:
       - wheel
+      - textx
+      - intervaltree
     plugin: python
     override-build: |
       pip3 install ../src/third_party/fasm/
