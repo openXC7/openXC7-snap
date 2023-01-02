@@ -1,6 +1,6 @@
 name: nextpnr-kintex
 base: core20
-version: '0.2.0'
+version: '0.2.1'
 summary: nextpnr PnR FPGA toolchain for Xilinx 7 series FPGAs, with Kintex support
 description: |
   Pre-packaged toolchain nextpnx-xilinx with support for Xilinx 7 series FPGAs
@@ -41,6 +41,7 @@ parts:
     source-depth: 1
     stage-packages:
       - python3
+      - libpython3.8
       - python3-pip
       - python3-yaml
     override-build: |
@@ -155,13 +156,18 @@ parts:
       '*' : /opt/prjxray/utils/
     override-prime: |
       snapcraftctl prime
-      sed -i '5i sys.path.append("/snap/nextpnr-kintex/current/opt/prjxray/")' bin/fasm2frames
-      sed -i '6i sys.path.append("/snap/nextpnr-kintex/current/usr/lib/python3/dist-packages/")' bin/fasm2frames
-      sed -i '5i sys.path.append("/snap/nextpnr-kintex/current/usr/lib/python3/dist-packages/")' bin/fasm
-      sed -i '13i import sys; sys.path.append("/snap/nextpnr-kintex/current/usr/lib/python3/dist-packages/")' opt/prjxray/utils/fasm2frames.py
-      sed -i '14i sys.path.append("/snap/nextpnr-kintex/current/opt/prjxray/")' opt/prjxray/utils/fasm2frames.py
+      sed -i '5i sys.path.append("/snap/nextpnr-kintex/current/opt/prjxray/")' bin/*fasm*
+      sed -i '5i sys.path.append("/snap/nextpnr-kintex/current/lib/python3.8/site-packages/")' bin/*fasm*
+      sed -i '5i sys.path.append("/snap/nextpnr-kintex/current/usr/lib/python3/dist-packages/")' bin/*fasm*
+      sed -i '5i import sys' bin/*fasm*
+      # create a launch wrapper for bit2fasm
       cp bin/fasm2frames bin/bit2fasm
       sed -i '1,$s/from utils.fasm2frames/from utils.bit2fasm/g' bin/bit2fasm
+      sed -i '1,1s,/usr/bin/env python3,/snap/nextpnr-kintex/current/usr/bin/python3.8,g' bin/*fasm*
+      cp -rv /usr/lib/python3.8 usr/lib/
+      cp -rv /usr/lib/python3 usr/lib/
+      cp -v /usr/bin/python3.8 usr/bin/
+      cp -rv /usr/local/lib/python3.8/dist-packages/* usr/lib/python3/dist-packages/
 
 apps:
   nextpnr-xilinx:
