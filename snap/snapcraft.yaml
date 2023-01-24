@@ -1,6 +1,6 @@
 name: nextpnr-kintex
 base: core20
-version: '0.2.1'
+version: '0.3.0'
 summary: nextpnr PnR FPGA toolchain for Xilinx 7 series FPGAs, with Kintex support
 description: |
   Pre-packaged toolchain nextpnx-xilinx with support for Xilinx 7 series FPGAs
