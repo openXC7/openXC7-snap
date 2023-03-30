@@ -1,10 +1,10 @@
-name: nextpnr-kintex
+name: openxc7
 base: core20
-version: '0.3.0'
-summary: nextpnr PnR FPGA toolchain for Xilinx 7 series FPGAs, with Kintex support
+version: '0.4.0'
+summary: yosys/nextpnr-xilinx based PnR FPGA toolchain for Xilinx 7 series FPGAs
 description: |
   Pre-packaged toolchain nextpnx-xilinx with support for Xilinx 7 series FPGAs
-  (Spartan7, Artix7, Kintex7)
+  (Spartan7, Artix7, Kintex7, Zynq7)
   Includes support for Kintex FPGAs
   This package does not include Yosys, which needs to be installed separately.
 grade: devel
@@ -32,6 +32,8 @@ build-packages:
   - zlib1g-dev
   - libeigen3-dev
   - curl
+  - gnutls-bin
+  - openssl
 
 parts:
   pyjson:
@@ -62,7 +64,7 @@ parts:
       - -DALLOW_ROOT=1
       - -DCMAKE_INSTALL_PREFIX=/usr
     override-build: |
-      [ -d prjxray-db ] || git clone https://github.com/SymbiFlow/prjxray-db.git
+      [ -d prjxray-db ] || git clone https://github.com/f4pga/prjxray-db.git
       snapcraftctl build
 
   prjxray-python:
@@ -88,10 +90,10 @@ parts:
 
   nextpnr-xilinx:
     after: [prjxray-python]
-    source: https://github.com/gatecat/nextpnr-xilinx.git
+    source: https://github.com/openXC7/nextpnr-xilinx.git
     source-type: git
     source-depth: 1
-    source-branch: xilinx-upstream
+    source-branch: main
     plugin: cmake
     stage-packages:
       - libboost-filesystem1.71.0
@@ -107,15 +109,6 @@ parts:
       - -DBUILD_GUI=0
       - -DCMAKE_INSTALL_PREFIX=/usr
     override-build: |
-      rm -rf ../src/xilinx/external/prjxray-db/
-      if [ -d ../../prjxray/build/prjxray-db ]; then cp -r ../../prjxray/build/prjxray-db ../src/xilinx/external/; fi
-      if [ ! -d db-workspace-for-kintex7 ]; then
-        git clone https://github.com/kintex-chatter/db-workspace-for-kintex7.git
-      fi
-      cp -rv db-workspace-for-kintex7/* ../src/xilinx/external/prjxray-db/kintex7
-      pushd ../src/xilinx/external/prjxray-db/kintex7
-      ln -s xc7k480t xc7k420t
-      popd
       snapcraftctl build
       cp bbasm ../install/usr/bin/
 
@@ -156,14 +149,14 @@ parts:
       '*' : /opt/prjxray/utils/
     override-prime: |
       snapcraftctl prime
-      sed -i '5i sys.path.append("/snap/nextpnr-kintex/current/opt/prjxray/")' bin/*fasm*
-      sed -i '5i sys.path.append("/snap/nextpnr-kintex/current/lib/python3.8/site-packages/")' bin/*fasm*
-      sed -i '5i sys.path.append("/snap/nextpnr-kintex/current/usr/lib/python3/dist-packages/")' bin/*fasm*
+      sed -i '5i sys.path.append("/snap/openxc7/current/opt/prjxray/")' bin/*fasm*
+      sed -i '5i sys.path.append("/snap/openxc7/current/lib/python3.8/site-packages/")' bin/*fasm*
+      sed -i '5i sys.path.append("/snap/openxc7/current/usr/lib/python3/dist-packages/")' bin/*fasm*
       sed -i '5i import sys' bin/*fasm*
       # create a launch wrapper for bit2fasm
       cp bin/fasm2frames bin/bit2fasm
       sed -i '1,$s/from utils.fasm2frames/from utils.bit2fasm/g' bin/bit2fasm
-      sed -i '1,1s,/usr/bin/env python3,/snap/nextpnr-kintex/current/usr/bin/python3.8,g' bin/*fasm*
+      sed -i '1,1s,/usr/bin/env python3,/snap/openxc7/current/usr/bin/python3.8,g' bin/*fasm*
       cp -rv /usr/lib/python3.8 usr/lib/
       cp -rv /usr/lib/python3 usr/lib/
       cp -v /usr/bin/python3.8 usr/bin/
