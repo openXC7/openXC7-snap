@@ -1,6 +1,6 @@
 name: openxc7
 base: core20
-version: '0.5.1'
+version: '0.6.0'
 summary: yosys/nextpnr-xilinx based PnR FPGA toolchain for Xilinx 7 series FPGAs
 description: |
   Pre-packaged toolchain nextpnx-xilinx with support for Xilinx 7 series FPGAs
@@ -64,7 +64,7 @@ parts:
       - -DALLOW_ROOT=1
       - -DCMAKE_INSTALL_PREFIX=/usr
     override-build: |
-      [ -d prjxray-db ] || git clone https://github.com/f4pga/prjxray-db.git
+      [ -d prjxray-db ] || git clone --branch 0.6.0 https://github.com/openxc7/prjxray-db.git
       snapcraftctl build
 
   prjxray-python:
@@ -93,7 +93,7 @@ parts:
     source: https://github.com/openXC7/nextpnr-xilinx.git
     source-type: git
     source-depth: 1
-    source-branch: 0.5.1
+    source-branch: 0.6.0
     plugin: cmake
     stage-packages:
       - libboost-filesystem1.71.0
@@ -133,7 +133,7 @@ parts:
 
   prjxray-db:
     after: [nextpnr-xilinx]
-    source: ../parts/nextpnr-xilinx/src/xilinx/external/prjxray-db
+    source: ../parts/prjxray/build/prjxray-db/
     source-type: local
     plugin: dump
     organize:
