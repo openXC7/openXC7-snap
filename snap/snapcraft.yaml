@@ -1,6 +1,6 @@
 name: openxc7
 base: core20
-version: '0.8.0'
+version: '0.8.1'
 summary: yosys/nextpnr-xilinx based PnR FPGA toolchain for Xilinx 7 series FPGAs
 description: |
   Pre-packaged toolchain nextpnx-xilinx with support for Xilinx 7 series FPGAs
@@ -93,7 +93,7 @@ parts:
     source: https://github.com/openXC7/nextpnr-xilinx.git
     source-type: git
     source-depth: 1
-    source-branch: 0.8.0
+    source-branch: 0.8.1
     plugin: cmake
     stage-packages:
       - libboost-filesystem1.71.0
